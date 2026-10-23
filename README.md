@@ -10,4 +10,4 @@ Otros elementos del circuito incluyen el LED verde del satélite (que indica que
 
 ---
 ### Video explicativo
-https://drive.google.com/file/d/1ykUhEqpNUyoC-kpXGAwzGxvVKVvOCLyA/view?usp=sharing
+<img width="918" height="516" alt="image" src="https://github.com/user-attachments/assets/8bdf7f8d-008f-45b3-b80f-137c9646ef8f" />
