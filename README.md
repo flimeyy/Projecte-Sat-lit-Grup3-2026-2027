@@ -11,3 +11,5 @@ Otros elementos del circuito incluyen el LED verde del satélite (que indica que
 ---
 ### Video explicativo
 [<img width="915" height="515" alt="image" src="https://github.com/user-attachments/assets/c6c2b8e7-7d95-4c13-8fca-78c5ca840153" />](https://drive.google.com/file/d/1ykUhEqpNUyoC-kpXGAwzGxvVKVvOCLyA/view?usp=sharing)
+---
+*Uso de la inteligencia artificial: Nuestro grupo se ha dispuesto a evitar el uso de la IA en lo máximo posible, limitándonos a busquedas excepcionales de ayuda que no se puedan resolver en la documentación oficial del lenguaje de programación. Hasta la fecha (06-11-2026), no se ha hecho ninguna consulta a dichas herramientas.*
