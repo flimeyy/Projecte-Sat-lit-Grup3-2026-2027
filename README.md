@@ -22,23 +22,23 @@ La 2ª versión de nuestro proyecto ha requerido cambios significativos. Desde l
 #### 1. Protocolo de aplicación:
 Debido a que las nuevas adiciones al satélite requieren nuevos tipos de mensajes, los cuales la aplicación de Python tendrá que saber diferenciar. Para poder diferenciar cada mensaje, hemos añadido un caracter identificativo a cada mensaje que varia en función del objetivo de dicho mensaje. En nuestro caso, hemos seguido el siguiente protocolo.
 + __Iniciación, temperaturas y humedades (1):__ Los mensajes que comiencen por el carácter '1' seran los que indiquen la inicialización del sistema o los que lleven la información captada por el sensor DHT del satélite.<br/>
-  Si el mensaje es enviado desde Python, este tendrá esta forma: *"1:[indicador de iniciación(1)/pausa(0)]"*, donde "1:1" indica que se ha de empezar la recepción y "1:0" que se ha de pausar.<br/>
-  En cambio, si el Python es el que recibe el mensaje, lo recibirá con la siguiente estructura: *"1:[dato de temperatura(ºC)]:[dato de humedad(%)]"*. Python se encargará de separar el mensaje y asignar cada dato a us respectiva variable.
+  Si el mensaje es enviado desde Python, este tendrá esta forma: __*"1:[indicador de iniciación(1)/pausa(0)]"*__, donde "1:1" indica que se ha de empezar la recepción y "1:0" que se ha de pausar.<br/>
+  En cambio, si el Python es el que recibe el mensaje, lo recibirá con la siguiente estructura: __*"1:[dato de temperatura(ºC)]:[dato de humedad(%)]"*__. Python se encargará de separar el mensaje y asignar cada dato a us respectiva variable.
 
 + __Medias de temperarura (2):__ Los mensajes introducidos por el carácter '2' indican donde se ha de realizar el cálculo de las medias y el resultado de estas.<br/>
-Si el mensaje es enviado desde Python, significará que indica dónde se ha de calcular la media de temperatura, el cual se puede realizar en Python(0), o en el satélite(1). De esta manera, estos mensajes seguirán: *"2:[indicador de cálculo en Python(0)/satélite(1)]"*.<br/>
-Si el mensaje es recibido en Python, será la media calculada desde el satélite. El mensaje se estructurará se esta manera: "*2:[media de temperatura(ºC)]*".
+Si el mensaje es enviado desde Python, significará que indica dónde se ha de calcular la media de temperatura, el cual se puede realizar en Python(0), o en el satélite(1). De esta manera, estos mensajes seguirán: __*"2:[indicador de cálculo en Python(0)/satélite(1)]"*__.<br/>
+Si el mensaje es recibido en Python, será la media calculada desde el satélite. El mensaje se estructurará se esta manera: __"*2:[media de temperatura(ºC)]*"__.
 
-+ __Alertas (3):__ Los mensajes que empiecen con un '3' seran aquellos que le indiquen a Pyhton que estan habiendo problemas, ya sean o de comunicación o de temperatura. Estos mensajes los recibirá Python con la siguiente estructura: "*3:[indicador de tipo de alerta (0/1/2)]"*.<br/>
++ __Alertas (3):__ Los mensajes que empiecen con un '3' seran aquellos que le indiquen a Pyhton que estan habiendo problemas, ya sean o de comunicación o de temperatura. Estos mensajes los recibirá Python con la siguiente estructura: __"*3:[indicador de tipo de alerta (0/1/2)]"*__.<br/>
 En caso de haber un problema de comunicación con el satélite, este enviará el mensaje: *"3:0"*.<br/>
 Si hay algun problema con el sensor DHT de temperatura y humedad, el mensaje será: *"3:1"*.<br/>
 Por último, si se detecta que la media ha superado el límite de temperatura préviamente introducido por el usuario, la alerta se enviará de esta forma: *"3:2"*.<br/>
 
 + __Sensor de distancia (4):__ Los mensajes que tengan como primer carácter '4' indicaran información en relación al sensor de distancia.<br/>
-Si el mensaje es enviado por Python, significará que este lleva consigo el grado de rotación nuevo introducido por el usuario. Por tanto, el mensaje se veria tal que así: *"4:[grado de rotación(º)]"*.<br/>
-No obstante, si el mensaje lo recibe Python, será un mensaje del satélite que informa de las datos captados por los senores ultrasónicos. De esta manera, el mensaje se estructurará de esta forma: *"4:[distancia captada (sensor1)]:[distancia captada (sensor2)]:[rotación actual]"*.
+Si el mensaje es enviado por Python, significará que este lleva consigo el grado de rotación nuevo introducido por el usuario. Por tanto, el mensaje se veria tal que así: __*"4:[grado de rotación(º)]"*__.<br/>
+No obstante, si el mensaje lo recibe Python, será un mensaje del satélite que informa de las datos captados por los senores ultrasónicos. De esta manera, el mensaje se estructurará de esta forma: __*"4:[distancia captada (sensor1)]:[distancia captada (sensor2)]:[rotación actual]"*__.
 
- + __Periodio de transmisión (5):__ El mensaje que tenga como primer carácter el '5' será el que modifique el periodo de transmisión. El mensaje se enviará desde Python al satélite con la siguiente estuctura *"5:[valor de periodo de transmmisión introducido por el usuario]"*.
+ + __Periodio de transmisión (5):__ El mensaje que tenga como primer carácter el '5' será el que modifique el periodo de transmisión. El mensaje se enviará desde Python al satélite con la siguiente estuctura __*"5:[valor de periodo de transmmisión introducido por el usuario]"*__.
 
 
 #### 2. Cálculo de medias de temperatura y límite:
