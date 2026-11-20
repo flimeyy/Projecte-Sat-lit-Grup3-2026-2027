@@ -13,3 +13,24 @@ Otros elementos del circuito incluyen el LED verde del satélite (que indica que
 [<img width="915" height="515" alt="image" src="https://github.com/user-attachments/assets/c6c2b8e7-7d95-4c13-8fca-78c5ca840153" />](https://drive.google.com/file/d/1ykUhEqpNUyoC-kpXGAwzGxvVKVvOCLyA/view?usp=sharing)
 ---
 *Uso de la inteligencia artificial: Nuestro grupo se ha dispuesto a evitar el uso de la IA en lo máximo posible, limitándonos a busquedas excepcionales de ayuda que no se puedan resolver en la documentación oficial del lenguaje de programación. Hasta la fecha (06-11-2026), no se ha hecho ninguna consulta a dichas herramientas.*
+
+---
+
+### Versión 2:
+La 2ª versión de nuestro proyecto ha requerido cambios significativos. Desde la incorporación de un sensor de distancia y rotación hasta una nueva estructuración de envio de datos para planificar la posterior incorporación del sistema LoRa (telecomunicaciones). Todos los cambios aplicados se resumen en la siguiente lista:
+
+#### 1. Protocolo de aplicación:
+Debido a que las nuevas adiciones al satélite requeriran nuevos tipos de mensajes, los cuales la aplicación de Python tendrá que saber diferenciar. Para poder diferenciar cada mensaje, hemos añadido un caracter identificativo a cada mensaje que varia en función del objetivo de dicho mensaje. En nuestro caso, hemos seguido el siguiente protocolo.
+  - Temperaturas y humedades (1): Los mensajes que comiencen por el carácter '1' tendran la siguiente estructura:
+      "1:[dato de temperatura]:[dato de humedad]"
+  -Medias de temperatura (2): Los mensajes que comiencen por el carácter '2' tendran la siguiente estructura:
+      "2:[indicador de dónde se ha de caluclar la media (tierra=0)(satélite=1)]"
+  -Alertas y alarmas (3): Los mensajes que comiencen por el carácter '3' tendran la siguiente estructura:
+      "3:[tipo de alarma]"
+          - (3:0): No se reciben datos del satélite.
+          - (3:1): El sensor DHT no esta funcionando correctamente.
+          - (3:2): Se ha superado el límite de temperatura.
+
+
+
+
