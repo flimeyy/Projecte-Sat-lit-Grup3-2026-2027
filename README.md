@@ -55,5 +55,6 @@ Además, el usuario tiene la libertad de introducir el grado de rotación al que
 #### 4. Modificación de periodos de transmisión:
 Por último, en esta versión del proyecto también hemos añadido una función que permite al usaurio modificar el periodo de transmisión de datos, modificando el intervalo en el que préviamente trabajaba el código del satélite y sustituyendolo por el nuevo valor introducido por el usuario.
 
-
+---
+*Uso de la inteligencia artificial: Nuestro grupo sigue dispuesto a evitar el uso de la IA en lo máximo posible, limitándonos a busquedas excepcionales de ayuda que no se puedan resolver en la documentación oficial del lenguaje de programación. Hasta la fecha (20-11-2026), no se ha hecho ninguna consulta a dichas herramientas.*
 
