@@ -20,16 +20,17 @@ Otros elementos del circuito incluyen el LED verde del satélite (que indica que
 La 2ª versión de nuestro proyecto ha requerido cambios significativos. Desde la incorporación de un sensor de distancia y rotación hasta una nueva estructuración de envio de datos para planificar la posterior incorporación del sistema LoRa (telecomunicaciones). Todos los cambios aplicados se resumen en la siguiente lista:
 
 #### 1. Protocolo de aplicación:
-Debido a que las nuevas adiciones al satélite requeriran nuevos tipos de mensajes, los cuales la aplicación de Python tendrá que saber diferenciar. Para poder diferenciar cada mensaje, hemos añadido un caracter identificativo a cada mensaje que varia en función del objetivo de dicho mensaje. En nuestro caso, hemos seguido el siguiente protocolo.
-  - Temperaturas y humedades (1): Los mensajes que comiencen por el carácter '1' tendran la siguiente estructura:
-      "1:[dato de temperatura]:[dato de humedad]"
-  -Medias de temperatura (2): Los mensajes que comiencen por el carácter '2' tendran la siguiente estructura:
-      "2:[indicador de dónde se ha de caluclar la media (tierra=0)(satélite=1)]"
-  -Alertas y alarmas (3): Los mensajes que comiencen por el carácter '3' tendran la siguiente estructura:
-      "3:[tipo de alarma]"
-          - (3:0): No se reciben datos del satélite.
-          - (3:1): El sensor DHT no esta funcionando correctamente.
-          - (3:2): Se ha superado el límite de temperatura.
+Debido a que las nuevas adiciones al satélite requieren nuevos tipos de mensajes, los cuales la aplicación de Python tendrá que saber diferenciar. Para poder diferenciar cada mensaje, hemos añadido un caracter identificativo a cada mensaje que varia en función del objetivo de dicho mensaje. En nuestro caso, hemos seguido el siguiente protocolo.
+- __Iniciación, temperaturas y humedades (1):__ Los mensajes que comiencen por el carácter '1' seran los que indiquen la inicialización del sistema o los que lleven la información captada por el sensor DHT del satélite.<br/>
+  Si el mensaje es enviado desde Python, este tendrá esta forma: *"1:[indicador de iniciación(1)/pausa(0)]"*, donde "1:1" indica que se ha de empezar la recepción y "1:0" que se ha de pausar.<br/>
+  En cambio, si el Python es el que recibe el mensaje, lo recibirá con la siguiente estructura: *"1:[dato de temperatura(ºC)]:[dato de humedad(%)]"*. Python se encargará de separar el mensaje y asignar cada dato a us respectiva variable.
+
+-__Medias de temperarura (2):__ Los mensajes introducidos por el carácter '2' indican donde se ha de realizar el cálculo de las medias y el resultado de estas.<br/>
+Si el mensaje es enviado desde Python, significará que indica dónde se ha de calcular la media de temperatura, el cual se puede realizar en Python(0), o en el satélite(1). De esta manera, estos mensajes seguirán: *"2:[indicador de cálculo en Python(0)/satélite(1)]"*.<br/>
+Si el mensaje es recibido en Python, será un mensaje, que, además de enviar la media de temperatura, también enviará junto a ella los datos de temperatura y humedad. Al ser la media de la misma naturaleza de la temperatura, no es necesario un nuevo tipo de mensaje exclusivo para la media. Por lo tanto, el mensaje completo tendrá esta forma: *"2:["*
+
+
+
 
 
 
