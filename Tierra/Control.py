@@ -1,14 +1,29 @@
 import tkinter as tk
 from tkinter import messagebox
-import serial,threading
+import serial, threading
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
+from matplotlib.lines import Line2D
 
-device = "/dev/ttyACM0"
-mySerial = serial.Serial(device, 9600)
+device = "COM3"
+mySerial = serial.Serial(device, 19200)
 media_tierra=1
+trozos=[]
+linea=-1
+
+def lectura():
+    threadRecepcion = threading.Thread (target = leer_linea)
+    threadRecepcion.start() 
+
+def leer_linea():
+    while True:
+        if mySerial.in_waiting > 0:
+            linea = mySerial.readline().decode('utf-8').rstrip()
+            print(linea)
+            global trozos
+            trozos = linea.split(":")
 
 def recepcion():
     temperaturas = []
@@ -22,7 +37,6 @@ def recepcion():
 
     fig = Figure(figsize=(6, 4))
     ax = fig.add_subplot(111)
-    ax.set_xlim(0, 100)
     ax.set_ylim(0, 100)
     linea_temp, = ax.plot([], [], label="Temperatura")
     linea_hum, = ax.plot([], [], label="Humedad")
@@ -36,10 +50,7 @@ def recepcion():
     grafica_canvas.grid(row=0, column=0, padx=5, pady=5, sticky=tk.N+tk.S+tk.E+tk.W)
 
     while True:
-        if mySerial.in_waiting > 0:
-            linea = mySerial.readline().decode('utf-8').rstrip()
-            print(linea)
-            trozos = linea.split(":")
+        if  mySerial.in_waiting > 0:  
             if trozos[0] == "1":
                 eje_x.append(i)
                 temperatura=float(trozos[2])
@@ -62,6 +73,11 @@ def recepcion():
                 temperaturas.append(temperatura)
                 humedades.append(humedad)
                 medias.append(media)
+                if len(temperaturas) >= 100: #PARA DEPURAR CAMBIAR
+                    del(temperaturas[0])
+                    del(humedades[0])
+                    del(medias[0])
+                    del(eje_x[len(eje_x)-1])
 
                 linea_temp.set_data(eje_x, temperaturas)
                 linea_hum.set_data(eje_x, humedades)
@@ -73,12 +89,12 @@ def recepcion():
 
                 i+=1
 
-            elif linea[0]== "3":
-                if linea[1] == "1":
+            elif trozos[0]== "3":
+                if trozos[1] == "1":
                     messagebox.showerror(title="Alerta", message="¡El sensor del satélite no funciona!")
-                elif linea[1] == "0":
+                elif trozos[1] == "0":
                     messagebox.showwarning(title="Alerta", message="¡No se recibe información del satélite!")
-                elif linea[1] == "2":
+                elif trozos[1] == "2":
                     messagebox.showwarning(title="Alerta", message="Se ha superado el límite de temperatura introducido")
 
 def iniciar():
@@ -141,16 +157,12 @@ def plot_angulos():
     value2 = []
     
     while True:
-        if mySerial.in_waiting > 0:
-            linea = mySerial.readline().decode("utf-8").rstrip()
-            print(linea)
-            linea = linea.split(":")
-            
-            if int(linea[0]) == 4:
-                ang = int(linea[3]) * np.pi / 180
+        if mySerial.in_waiting > 0: # Hay que cambiarlo URGENTEMENTE
+            if trozos[0] == "4":
+                ang = int(trozos[3]) * np.pi / 180
                 angle1.append(ang)
-                value1.append(float(linea[1]))
-                value2.append(float(linea[2]))
+                value1.append(float(trozos[1]))
+                value2.append(float(trozos[2]))
                 
                 # Aumentamos el historial a 8 para que el barrido de área se aprecie mejor
                 if len(angle1) > 8:
@@ -309,6 +321,7 @@ limite_frame.rowconfigure(index=0, weight=1)
 limite_frame.columnconfigure(index=0, weight=1)
 
 limite_slider=tk.Scale(limite_frame, from_=0, to=100, length=450, orient="horizontal", tickinterval=25, font=("Comic Sans MS", 6))
+limite_slider.set(50)
 limite_slider.grid(row=0, column=0)
 
 #Cuadro de la radio
@@ -343,4 +356,7 @@ canvas = FigureCanvasTkAgg(fig, master=radio_frame)
 canvas_widget = canvas.get_tk_widget()
 canvas_widget.pack(fill=tk.BOTH, expand=True)
 
+window.after_idle(lectura)
 window.mainloop()
+
+quit()
