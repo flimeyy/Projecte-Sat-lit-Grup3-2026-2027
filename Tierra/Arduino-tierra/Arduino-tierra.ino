@@ -1,7 +1,7 @@
 // Comunicación entre placas arduino
 #include <SoftwareSerial.h>
 int i;
-SoftwareSerial mySerial(10, 11); // RX, TX 
+SoftwareSerial mySerial(10, 11); // RX, TX x e
 //////////////////////////////
 // Led de la tierra
 const int led1 = 13;
@@ -14,8 +14,8 @@ int flag = 0;
 void setup() {
    pinMode(led1, OUTPUT);
    pinMode(led_error, OUTPUT);
-   Serial.begin(9600);
-   mySerial.begin(9600);
+   Serial.begin(19200);
+   mySerial.begin(19200);
 }
 void loop() {
    int i = millis();
