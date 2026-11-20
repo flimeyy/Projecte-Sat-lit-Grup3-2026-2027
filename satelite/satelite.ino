@@ -12,7 +12,7 @@ SoftwareSerial mySerial(10, 11); // RX, TX
 
 // Led y control de tiempo
 const int led = 12;  // LED en el pin 13 
-const int interval = 3000; // 3 segundos para el LED 13
+int interval = 3000; // 3 segundos para el LED 13
 long inicio_temp;
 long heartbeat;
 
@@ -47,9 +47,11 @@ const int echoPin2 = 6;
 float time1,time2,distance1,distance2;
 long time;
 
+long servo_dellay;
+
 void setup() {
-  Serial.begin(9600);
-  mySerial.begin(9600);
+  Serial.begin(19200);
+  mySerial.begin(19200);
   dht.begin();
   pinMode(led, OUTPUT);
   digitalWrite(led, LOW);
@@ -65,6 +67,8 @@ void setup() {
   digitalWrite(trigPin2,LOW);
   pinMode(echoPin2, INPUT);
   servoMotor.attach(3);
+
+  servo_dellay = millis();
 }
 
 void loop() {
@@ -179,7 +183,7 @@ void loop() {
     nextTimeoutHT = millis();
   }
 
-  if (millis() - heartbeat >= 1000){
+  if (millis() - heartbeat >= 3000){
     mySerial.println(0);
     heartbeat = millis();
   }
@@ -197,24 +201,27 @@ void loop() {
     digitalWrite(trigPin2,LOW);
     time2 = pulseIn(echoPin2,HIGH);
 
-    if (millis()-time >= 1000 || grado == 180){
+    if (millis()-time >= 5000){
       distance1 = time1/59; // "https://naylampmechatronics.com/blog/10_tutorial-de-arduino-y-sensor-ultrasonico-hc-sr04.html" hace una demostración matemática de como dividir los milisegundos del sensor por 59 nos permite obtener la distancia en cm.
       distance2 = time2/59;
-      Serial.print("4:");
-      Serial.print(distance1);
-      Serial.print(":");
-      Serial.print(distance2);
-      Serial.print(":");
-      Serial.println(grado); // Mandamos toda la información en el formato establecido por Ramón: id:distancia1:distancia2:pos_servomotor
+      mySerial.print("4:");
+      mySerial.print(distance1);
+      mySerial.print(":");
+      mySerial.print(distance2);
+      mySerial.print(":");
+      mySerial.println(grado); // Mandamos toda la información en el formato establecido por Ramón: id:distancia1:distancia2:pos_servomotor
       time = millis();
       // OJO: Este código supone que el clima es perfecto (25ºC). Para la versión 4, planeamos tener en cuenta el clima que hará para calcular la velocidad del sonido en ese ambiente.
       ///////////////////////////////////////////////////////////
     }
-  if (rotar & grado < 180){ // Generamos un bucle donde el servomotor girará (casi) constantemente sin interrupciones (es decir, cada ejecución del código, el servomotor aumentará 1º su rotación)
-      grado=grado+1;
-    } else if (rotar) {
-      grado=0; // En el caso de que el grado sea igual (o, en caso de error, mayor a 180º), el
+  if (millis() - servo_dellay >= 1000){
+    if (rotar && grado < 180){ // Generamos un bucle donde el servomotor girará (casi) constantemente sin interrupciones (es decir, cada ejecución del código, el servomotor aumentará 1º su rotación)
+        grado=grado+10;
+      } else if (rotar) {
+        grado=0; // En el caso de que el grado sea igual (o, en caso de error, mayor a 180º), el
+      }
+      servoMotor.write(grado);
+      servo_dellay = millis();
     }
-    servoMotor.write(grado);
   }
 }
