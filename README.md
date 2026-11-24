@@ -56,7 +56,7 @@ Además, el usuario tiene la libertad de introducir el grado de rotación al que
 Por último, en esta versión del proyecto también hemos añadido una función que permite al usaurio modificar el periodo de transmisión de datos, modificando el intervalo en el que préviamente trabajaba el código del satélite y sustituyendolo por el nuevo valor introducido por el usuario.
 
 #### 5. Demostración de la versión 2
-[<img width="915" height="515" alt="image" src="https://github.com/user-attachments/assets/c6c2b8e7-7d95-4c13-8fca-78c5ca840153" />](https://drive.google.com/file/d/1ykUhEqpNUyoC-kpXGAwzGxvVKVvOCLyA/view?usp=sharing)
+[<img width="915" height="515" alt="image" src="https://github.com/user-attachments/assets/c6c2b8e7-7d95-4c13-8fca-78c5ca840153" />](https://drive.google.com/file/d/1risGANly8rFAdRtCfwT3UFhoMLZaDDVb/view?usp=sharing)
 
 ---
 *Uso de la inteligencia artificial: Nuestro grupo sigue dispuesto a evitar el uso de la IA en lo máximo posible, limitándonos a busquedas excepcionales de ayuda que no se puedan resolver en la documentación oficial del lenguaje de programación. Hasta la fecha (20-11-2026), no se ha hecho ninguna consulta a dichas herramientas.*
